@@ -1,0 +1,28 @@
+version: '3.9'
+services:
+  mariadb:
+    image: mariadb:11.1
+    restart: unless-stopped
+    environment:
+      - MARIADB_ROOT_PASSWORD={make a password}
+      - MARIADB_DATABASE=opencart
+      - MARIADB_USER=opencart
+      - MARIADB_PASSWORD={make a password}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+  oc-app:
+    build: ./php-apache
+    restart: unless-stopped
+    volumes:
+      - ./opencart/www/upload:/var/www/html:z
+      - ./opencart/storage:/var/www/storage:z
+    environment:
+      - HOST_NAME={your.domain.tld}
+      - MYSQL_HOST=mariadb
+    ports:
+      - {host port number}:80
+    depends_on:
+      - mariadb
+volumes:
+  mariadb_data:
