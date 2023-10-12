@@ -15,8 +15,7 @@ services:
     build: ./php-apache
     restart: unless-stopped
     volumes:
-      - ./opencart/www/upload:/var/www/html:z
-      - ./opencart/storage:/var/www/storage:z
+      - ./opencart:/var/www
     environment:
       - HOST_NAME={your.domain.tld}
       - MYSQL_HOST=mariadb
